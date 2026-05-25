@@ -1,0 +1,7 @@
+django>=5.0,<6.0
+djangorestframework
+django-oauth-toolkit
+pyjwt
+django-environ
+factory-boy
+django-cors-headers
