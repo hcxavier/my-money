@@ -14,12 +14,13 @@ class AuthRepository {
       final result = await _appAuth.authorizeAndExchangeCode(
         AuthorizationTokenRequest(
           dotenv.get("CLIENT_ID"),
-          'my.money.app://oauth-callback',
+          'com.example.mymoney://callback',
           serviceConfiguration: AuthorizationServiceConfiguration(
             authorizationEndpoint: "${dotenv.get("API_URL")}/o/authorize/",
             tokenEndpoint: "${dotenv.get("API_URL")}/o/token/",
           ),
-          scopes: ['read', 'write'],
+          scopes: ['read', 'write', 'openid'],
+          allowInsecureConnections: true
         ),
       );
       return result;

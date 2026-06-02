@@ -52,7 +52,7 @@ ROOT_URLCONF = "config.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [BASE_DIR / 'templates'],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -69,6 +69,17 @@ WSGI_APPLICATION = "config.wsgi.application"
 DATABASES = {
     "default": env.db("DATABASE_URL", default=f"sqlite:///{os.path.join(BASE_DIR, 'db.sqlite3')}")
 }
+
+OIDC_KEY_PATH = os.path.join(BASE_DIR, 'oidc_rsa.key')
+
+# Lê o conteúdo do arquivo
+try:
+    with open(OIDC_KEY_PATH, 'r') as f:
+        OIDC_RSA_PRIVATE_KEY = f.read()
+except FileNotFoundError:
+    # Aviso útil para caso você clone o projeto em outra máquina e esqueça de gerar a chave
+    print("Aviso: Arquivo oidc_rsa.key não encontrado. O OIDC não funcionará corretamente.")
+    OIDC_RSA_PRIVATE_KEY = ""
 
 AUTH_USER_MODEL = "users.User"
 
@@ -127,10 +138,17 @@ REST_FRAMEWORK = {
 }
 
 OAUTH2_PROVIDER = {
+    'OIDC_ENABLED': True,
+    
+    'OIDC_RSA_PRIVATE_KEY': OIDC_RSA_PRIVATE_KEY,
+    
+    'SCOPES': {
+        'read': 'Ler dados',
+        'write': 'Modificar dados',
+        'openid': 'Autenticação OpenID Connect',
+    },
+
     "ACCESS_TOKEN_EXPIRE_SECONDS": 60 * 60 * 24 * 7,
-    "ALLOWED_REDIRECT_URI_SCHEMES": ["http", "https", "my-money"],
-    "SCOPES": {
-        "read": "Read scope",
-        "write": "Write scope",
-    }
+    "ALLOWED_REDIRECT_URI_SCHEMES": ["http", "https", "com.example.mymoney"],
+
 }
