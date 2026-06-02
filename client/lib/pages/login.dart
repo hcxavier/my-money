@@ -6,9 +6,12 @@ import 'package:my_money/components/ui/nav_auth.dart';
 import 'package:my_money/features/auth/auth_controller.dart';
 
 class LoginPage extends StatelessWidget {
-  final AuthController _authController = AuthController();
+  final AuthController _authController;
 
-  LoginPage({super.key});
+  LoginPage({
+    super.key,
+    AuthController? authController,
+  }) : _authController = authController ?? AuthController();
 
   Future<void> _handleLogin(
     BuildContext context,
