@@ -125,11 +125,11 @@ class TransactionsFilters {
     if (dataFim != null) {
       params['dataFim'] = dataFim!.toIso8601String();
     }
-    if (categoriasId != null) {
-      params['categoriasId'] = categoriasId;
+    if (categoriasId != null && categoriasId!.isNotEmpty) {
+      params['categoryIds'] = categoriasId!.join(',');
     }
-    if (tipos != null) {
-      params['tipos'] = tipos;
+    if (tipos != null && tipos!.isNotEmpty) {
+      params['type'] = tipos!.join(',');
     }
     if (search != null) {
       params['search'] = search;

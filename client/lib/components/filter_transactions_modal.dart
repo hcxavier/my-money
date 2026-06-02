@@ -279,12 +279,12 @@ class _FilterTransactionsFormState extends State<FilterTransactionsForm> {
                       const SizedBox(height: 8),
                       _buildCheckbox(
                         'Entrada',
-                        _tiposSelecionados?.contains('entrada') ?? false,
+                        _tiposSelecionados?.contains('income') ?? false,
                         (checked) {
                           setState(() {
                             checked == true
-                                ? _tiposSelecionados?.add('entrada')
-                                : _tiposSelecionados?.remove('entrada');
+                                ? _tiposSelecionados?.add('income')
+                                : _tiposSelecionados?.remove('income');
                           });
                         },
                       ),
