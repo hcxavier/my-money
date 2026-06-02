@@ -11,8 +11,9 @@ class UserRepository {
   Future<UserModel> obterPerfilUsuario() async {
     try {
       final response = await _dio.get("/users/me");
+      print('Perfil do usuário carregado: $response');
 
-      var user = response.data["user"];
+      var user = response.data;
 
       return UserModel.fromJson(user);
     } on DioException catch (e) {

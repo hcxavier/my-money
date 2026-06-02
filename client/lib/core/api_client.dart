@@ -6,7 +6,7 @@ class ApiClient {
 
   ApiClient() {
     BaseOptions options = BaseOptions(
-      baseUrl: "http://127.0.0.1:8000/",
+      baseUrl: "http://192.168.0.104:8000/",
       connectTimeout: const Duration(seconds: 60),
       receiveTimeout: const Duration(seconds: 60),
       headers: {"Content-Type": "application/json"},

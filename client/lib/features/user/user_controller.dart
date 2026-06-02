@@ -17,7 +17,8 @@ class UserController {
     errorMessage.value = null;
 
     try {
-      return await _repository.obterPerfilUsuario();
+      final user = await _repository.obterPerfilUsuario();
+      return user;
     } catch (e) {
       errorMessage.value = e.toString().replaceAll('Exception: ', '');
       rethrow;

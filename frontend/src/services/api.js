@@ -1,3 +1,4 @@
+import process from "process";  
 
 const getToken = () => localStorage.getItem("my-money-token");
 
@@ -15,6 +16,7 @@ export const clearToken = () => {
 
 async function request(url, options = {}) {
   const token = getToken();
+  const baseUrl = process.env.API_BASE_URL || "http://localhost:8000/";
   const headers = {
     ...options.headers,
   };
@@ -27,7 +29,7 @@ async function request(url, options = {}) {
     headers["Content-Type"] = "application/json";
   }
 
-  const response = await fetch(url, {
+  const response = await fetch(`${baseUrl}${url}`, {
     ...options,
     headers,
   });

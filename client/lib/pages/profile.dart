@@ -78,7 +78,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
     try {
       final user = await _userController.obterPerfilUsuario();
-
+      
       if (mounted) {
         setState(() {
           _nameController.text = user.name;

@@ -128,6 +128,7 @@ REST_FRAMEWORK = {
 
 OAUTH2_PROVIDER = {
     "ACCESS_TOKEN_EXPIRE_SECONDS": 60 * 60 * 24 * 7,
+    "ALLOWED_REDIRECT_URI_SCHEMES": ["http", "https", "my-money"],
     "SCOPES": {
         "read": "Read scope",
         "write": "Write scope",
