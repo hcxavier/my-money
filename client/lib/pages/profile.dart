@@ -42,7 +42,7 @@ class _ProfilePageState extends State<ProfilePage> {
         await _userController.excluirConta();
 
         final tokenService = TokenService();
-        await tokenService.removerToken();
+        await tokenService.removerTokens();
 
         if (mounted) {
           CustomSnackBar.show(

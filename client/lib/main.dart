@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 // ignore: depend_on_referenced_packages
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:my_money/pages/auth_check.dart';
 import 'package:my_money/pages/home.dart';
 import 'package:my_money/pages/login.dart';
 import 'package:my_money/pages/profile.dart';
 import 'package:my_money/pages/register.dart';
 
-void main() {
+void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+
+  await dotenv.load(fileName: ".env");
 
   runApp(const MyApp());
 }

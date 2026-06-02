@@ -22,7 +22,7 @@ class _AuthCheckState extends State<AuthCheck> {
 
   Future<void> _verificarTokenAutenticacao() async {
     final tokenService = TokenService();
-    final String? token = await tokenService.recuperarToken();
+    final String? token = await tokenService.recuperarAccessToken();
 
     if (mounted) {
       if (token != null) {

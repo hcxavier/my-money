@@ -10,7 +10,7 @@ class LogoutButton extends StatelessWidget {
   Future<void> fazerLogout(BuildContext context) async {
     final tokenService = TokenService();
 
-    await tokenService.removerToken();
+    await tokenService.removerTokens();
 
     if (context.mounted) {
       CustomSnackBar.show(

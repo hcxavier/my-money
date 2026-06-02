@@ -10,6 +10,30 @@ class AuthController {
   final isLoading = ValueNotifier<bool>(false);
   final errorMessage = ValueNotifier<String?>(null);
 
+  // Fluxo OAuth2
+  Future<bool> realizarLoginOAuth2() async {
+    isLoading.value = true;
+    errorMessage.value = null;
+
+    try {
+      final result = await _repository.realizarLoginOAuth2();
+
+      if (result != null && result.accessToken != null) {
+        await _tokenService.salvarTokens(
+          result.accessToken!,
+          result.refreshToken,
+        );
+        return true;
+      }
+      return false;
+    } catch (e) {
+      errorMessage.value = e.toString().replaceAll('Exception: ', '');
+      return false;
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
   // função de validação de token
   Future<bool> validarToken() async {
     isLoading.value = true;
@@ -22,7 +46,7 @@ class AuthController {
     }
   }
 
-  // Função de login
+  // Função de login (Email/Senha - legado ou alternativo)
   Future<bool> realizarLoginEmailSenha(String email, String senha) async {
     isLoading.value = true;
     errorMessage.value = null;
@@ -34,7 +58,7 @@ class AuthController {
       );
 
       if (authModelLogin.token.isNotEmpty) {
-        await _tokenService.salvarToken(authModelLogin.token);
+        await _tokenService.salvarTokens(authModelLogin.token, null);
         return true;
       }
 
@@ -71,7 +95,7 @@ class AuthController {
       );
 
       if (authModelLogin.token.isNotEmpty) {
-        await _tokenService.salvarToken(authModelLogin.token);
+        await _tokenService.salvarTokens(authModelLogin.token, null);
         return true;
       }
 

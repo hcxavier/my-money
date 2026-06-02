@@ -1,9 +1,33 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_appauth/flutter_appauth.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:my_money/core/api_client.dart';
 import 'package:my_money/features/auth/auth_model.dart';
 
 class AuthRepository {
   final _dio = ApiClient().dio;
+  final _appAuth = const FlutterAppAuth();
+
+  // fluxo OAuth2 + PKCE
+  Future<AuthorizationTokenResponse?> realizarLoginOAuth2() async {
+    try {
+      final result = await _appAuth.authorizeAndExchangeCode(
+        AuthorizationTokenRequest(
+          dotenv.get("CLIENT_ID"),
+          'my.money.app://oauth-callback',
+          serviceConfiguration: AuthorizationServiceConfiguration(
+            authorizationEndpoint: "${dotenv.get("API_URL")}/o/authorize/",
+            tokenEndpoint: "${dotenv.get("API_URL")}/o/token/",
+          ),
+          scopes: ['read', 'write'],
+        ),
+      );
+      return result;
+    } catch (e) {
+      print('Erro no login OAuth2: $e');
+      throw Exception("Falha na autenticação. Tente novamente.");
+    }
+  }
 
   // função de validação de token
   Future<bool> validarToken() async {

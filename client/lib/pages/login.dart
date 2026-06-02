@@ -37,6 +37,26 @@ class LoginPage extends StatelessWidget {
     }
   }
 
+  Future<void> _handleOAuth2Login(BuildContext context) async {
+    final success = await _authController.realizarLoginOAuth2();
+
+    if (!context.mounted) return;
+
+    if (success) {
+      CustomSnackBar.show(
+        context: context,
+        message: "Login OAuth2 realizado com sucesso!",
+      );
+      Navigator.pushReplacementNamed(context, "/home");
+    } else {
+      CustomSnackBar.show(
+        context: context,
+        message: _authController.errorMessage.value ?? "Erro no login OAuth2.",
+        isError: true,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,6 +73,28 @@ class LoginPage extends StatelessWidget {
             onLoginPressed: (email, password) async {
               await _handleLogin(context, email, password);
             },
+          ),
+
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24.0),
+            child: SizedBox(
+              width: double.infinity,
+              height: 56,
+              child: OutlinedButton.icon(
+                onPressed: () => _handleOAuth2Login(context),
+                icon: const Icon(Icons.security, color: Colors.white),
+                label: const Text(
+                  "Entrar com OAuth2",
+                  style: TextStyle(color: Colors.white, fontSize: 16),
+                ),
+                style: OutlinedButton.styleFrom(
+                  side: const BorderSide(color: Color(0xFF00875F)),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                ),
+              ),
+            ),
           ),
 
           const Spacer(),

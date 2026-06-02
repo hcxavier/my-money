@@ -2,20 +2,31 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class TokenService {
   final _storage = const FlutterSecureStorage();
-  final String _tokenKey = "jwt_token";
+  
+  final String _accessTokenKey = "access_token";
+  final String _refreshTokenKey = "refresh_token";
 
-  // Função de salvar o token
-  Future<void> salvarToken(String token) async {
-    await _storage.write(key: _tokenKey, value: token);
+  // Salvar tokens
+  Future<void> salvarTokens(String accessToken, String? refreshToken) async {
+    await _storage.write(key: _accessTokenKey, value: accessToken);
+    if (refreshToken != null) {
+      await _storage.write(key: _refreshTokenKey, value: refreshToken);
+    }
   }
 
-  // Função de recuperar o token
-  Future<String?> recuperarToken() async {
-    return await _storage.read(key: _tokenKey);
+  // Recuperar access token
+  Future<String?> recuperarAccessToken() async {
+    return await _storage.read(key: _accessTokenKey);
   }
 
-  // Função de remover o token
-  Future<void> removerToken() async {
-    await _storage.delete(key: _tokenKey);
+  // Recuperar refresh token
+  Future<String?> recuperarRefreshToken() async {
+    return await _storage.read(key: _refreshTokenKey);
+  }
+
+  // Remover tokens
+  Future<void> removerTokens() async {
+    await _storage.delete(key: _accessTokenKey);
+    await _storage.delete(key: _refreshTokenKey);
   }
 }
