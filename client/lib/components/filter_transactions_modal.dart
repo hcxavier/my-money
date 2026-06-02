@@ -22,7 +22,7 @@ class FilterTransactionsForm extends StatefulWidget {
 class _FilterTransactionsFormState extends State<FilterTransactionsForm> {
   DateTime? _dataInicio;
   DateTime? _dataFim;
-  List<int>? _categoriasSelecionadas = [];
+  List<String>? _categoriasSelecionadas = [];
   List<String>? _tiposSelecionados = [];
 
   @override
@@ -290,12 +290,12 @@ class _FilterTransactionsFormState extends State<FilterTransactionsForm> {
                       ),
                       _buildCheckbox(
                         'Saída',
-                        _tiposSelecionados?.contains('saida') ?? false,
+                        _tiposSelecionados?.contains('expense') ?? false,
                         (checked) {
                           setState(() {
                             checked == true
-                                ? _tiposSelecionados?.add('saida')
-                                : _tiposSelecionados?.remove('saida');
+                                ? _tiposSelecionados?.add('expense')
+                                : _tiposSelecionados?.remove('expense');
                           });
                         },
                       ),

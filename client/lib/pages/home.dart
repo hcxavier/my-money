@@ -104,7 +104,7 @@ class _HomePageState extends State<HomePage> {
   Future<void> _salvarNovaTransacao(
     String title,
     double amount,
-    int categoryId,
+    String categoryId,
     String type,
   ) async {
     try {
@@ -123,7 +123,7 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  Future<void> _handleDeleteTransaction(int transactionId) async {
+  Future<void> _handleDeleteTransaction(String transactionId) async {
     await _transactionsController.excluirTransacao(transactionId);
 
     if (!context.mounted) return;
@@ -149,10 +149,10 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> _handleEditTransaction({
-    required int idTransacao,
+    required String idTransacao,
     required String tittleInicial,
     required double precoInicial,
-    required int categoriaIdInicial,
+    required String categoriaIdInicial,
     required String tipoInicial,
   }) async {
     // Lógica para editar a transação
@@ -186,10 +186,10 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _abrirModalTransacao({
-    int? idTransacao,
+    String? idTransacao,
     String? tittleInicial,
     double? precoInicial,
-    int? categoriaIdInicial,
+    String? categoriaIdInicial,
     String? tipoInicial,
   }) {
     showModalBottomSheet(
@@ -329,10 +329,10 @@ class _HomePageState extends State<HomePage> {
                               isLoading: _isLoadingTransactions,
                               onEdit:
                                   ({
-                                    int? idTransacao,
+                                    String? idTransacao,
                                     String? tittleInicial,
                                     double? precoInicial,
-                                    int? categoriaIdInicial,
+                                    String? categoriaIdInicial,
                                     String? tipoInicial,
                                   }) {
                                     _abrirModalTransacao(

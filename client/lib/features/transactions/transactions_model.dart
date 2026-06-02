@@ -1,5 +1,5 @@
 class TransactionModel {
-  final int id;
+  final String id;
   final String title;
   final double amount;
   final String createdAt;
@@ -17,12 +17,15 @@ class TransactionModel {
 
   factory TransactionModel.fromJson(Map<String, dynamic> json) {
     return TransactionModel(
-      id: json['id'] as int,
+      id: json['id'] as String,
       title: json['title'] as String,
       amount: (json['amount'] as num).toDouble(),
       createdAt: json['createdAt'] as String,
       type: json['type'] as String,
-      category: CategoryModel.fromJson(json['category']),
+      category: CategoryModel(
+        id: json['categoryId'] as String,
+        name: json['categoryName'] as String,
+      ),
     );
   }
 }
@@ -40,9 +43,9 @@ class TransactionsMetrics {
 
   factory TransactionsMetrics.fromJson(Map<String, dynamic> json) {
     return TransactionsMetrics(
-      entradas: EntradaSaidaMetric.fromJson(json['entradas']),
-      saidas: EntradaSaidaMetric.fromJson(json['saidas']),
-      total: TotalMetric.fromJson(json['total']),
+      entradas: EntradaSaidaMetric.fromJson(Map<String, dynamic>.from(json['income'] ?? {})),
+      saidas: EntradaSaidaMetric.fromJson(Map<String, dynamic>.from(json['expenses'] ?? {})),
+      total: TotalMetric.fromJson(Map<String, dynamic>.from(json['total'] ?? {})),
     );
   }
 }
@@ -55,8 +58,8 @@ class EntradaSaidaMetric {
 
   factory EntradaSaidaMetric.fromJson(Map<String, dynamic> json) {
     return EntradaSaidaMetric(
-      total: (json['total'] as num).toDouble(),
-      lastDate: json['lastDate'] as String,
+      total: (json['total'] as num?)?.toDouble() ?? 0.0,
+      lastDate: json['lastDate'] as String? ?? '',
     );
   }
 }
@@ -74,28 +77,28 @@ class TotalMetric {
 
   factory TotalMetric.fromJson(Map<String, dynamic> json) {
     return TotalMetric(
-      balance: (json['balance'] as num).toDouble(),
-      firstDate: json['firstDate'] as String,
-      lastDate: json['lastDate'] as String,
+      balance: (json['netBalance'] as num?)?.toDouble() ?? 0.0,
+      firstDate: json['firstDate'] as String? ?? '',
+      lastDate: json['lastDate'] as String? ?? '',
     );
   }
 }
 
 class CategoryModel {
-  final int id;
+  final String id;
   final String name;
 
   CategoryModel({required this.id, required this.name});
 
   factory CategoryModel.fromJson(Map<String, dynamic> json) {
-    return CategoryModel(id: json['id'] as int, name: json['name'] as String);
+    return CategoryModel(id: json['id'] as String, name: json['name'] as String);
   }
 }
 
 class TransactionsFilters {
   final DateTime? dataInicio;
   final DateTime? dataFim;
-  final List<int>? categoriasId;
+  final List<String>? categoriasId;
   final List<String>? tipos;
   final String? search;
 

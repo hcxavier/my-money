@@ -3,7 +3,7 @@ import 'package:my_money/components/confirm_delete_transaction.dart';
 import 'package:my_money/helpers/formatters.dart';
 
 class TransactionCard extends StatelessWidget {
-  final int id;
+  final String id;
   final String title;
   final double amount;
   final String category;
@@ -27,7 +27,7 @@ class TransactionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dismissible(
-      key: Key(id.toString()),
+      key: Key(id),
 
       // fundo quando desliza a DIREITA (Editar - Azul)
       background: Container(

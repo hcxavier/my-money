@@ -11,17 +11,9 @@ class TransactionsRepository {
       final response = await _dio.get("/metrics");
       final data = response.data;
 
-      // Tratamento para valores nulos em datas
-      data['entradas'] ??= {};
-      data['saidas'] ??= {};
-      data['total'] ??= {};
-
-      data['entradas']['lastDate'] ??= '';
-      data['saidas']['lastDate'] ??= '';
-      data['total']['firstDate'] ??= '';
-      data['total']['lastDate'] ??= '';
-
-      var metricas = TransactionsMetrics.fromJson(data);
+      var metricas = TransactionsMetrics.fromJson(
+        Map<String, dynamic>.from(data),
+      );
       return metricas;
     } on DioException catch (e) {
       print('Erro ao obter métricas globais: \\${e.message}');
@@ -37,7 +29,7 @@ class TransactionsRepository {
       final response = await _dio.get("/transactions/categories");
 
       var categorias = (response.data as List)
-          .map((e) => CategoryModel.fromJson(e))
+          .map((e) => CategoryModel.fromJson(Map<String, dynamic>.from(e)))
           .toList();
       return categorias;
     } on DioException catch (e) {
@@ -56,10 +48,13 @@ class TransactionsRepository {
         queryParameters: filters.toQueryParameters(),
       );
       final data = response.data;
+
       if (data is List && data.isEmpty) {
         return <TransactionModel>[];
       }
-      return (data as List).map((e) => TransactionModel.fromJson(e)).toList();
+      return (data as List)
+          .map((e) => TransactionModel.fromJson(Map<String, dynamic>.from(e)))
+          .toList();
     } on DioException catch (e) {
       print('Erro ao obter transações: \\${e.message}');
       throw Exception("Falha ao obter transações. Tente novamente mais tarde.");
@@ -71,7 +66,7 @@ class TransactionsRepository {
     required String title,
     required double amount,
     required String type,
-    required int categoryId,
+    required String categoryId,
   }) async {
     try {
       await _dio.post(
@@ -91,7 +86,7 @@ class TransactionsRepository {
   }
 
   // função para excluir uma transação
-  Future<bool> excluirTransacao(int id) async {
+  Future<bool> excluirTransacao(String id) async {
     try {
       await _dio.delete("/transactions/$id", data: {});
       return true;
@@ -112,11 +107,11 @@ class TransactionsRepository {
 
   // função para editar uma transação
   Future<bool> editarTransacao({
-    required int id,
+    required String id,
     required String title,
     required double amount,
     required String type,
-    required int categoryId,
+    required String categoryId,
   }) async {
     try {
       await _dio.put(

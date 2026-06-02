@@ -67,7 +67,7 @@ class SummaryCardsList extends StatelessWidget {
             iconColor: Colors.white,
             isTotalCard: true,
             customBackgroundColor: _getTotalCardColor(
-              metricsData!.total.balance,
+              metricsData?.total.balance ?? 0,
             ),
           ),
         ],

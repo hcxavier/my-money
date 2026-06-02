@@ -49,7 +49,7 @@ class CategoryDropdown extends StatelessWidget {
                   final isSelected = selectedCategoryId == categoria.id;
 
                   return DropdownMenuItem<String>(
-                    value: categoria.id.toString(),
+                    value: categoria.id,
                     child: Text(
                       categoria.name,
                       style: TextStyle(

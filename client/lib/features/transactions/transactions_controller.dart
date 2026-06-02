@@ -69,7 +69,7 @@ class TransactionsController {
     required String title,
     required double amount,
     required String type,
-    required int categoryId,
+    required String categoryId,
   }) async {
     isLoading.value = true;
     errorMessage.value = null;
@@ -77,7 +77,7 @@ class TransactionsController {
     try {
       if (title.isEmpty ||
           amount <= 0 ||
-          (type != 'entrada' && type != 'saida')) {
+          (type != 'income' && type != 'expense')) {
         throw Exception(
           "Dados inválidos. Verifique as informações e tente novamente.",
         );
@@ -99,7 +99,7 @@ class TransactionsController {
   }
 
   // excluir transação
-  Future<bool> excluirTransacao(int id) async {
+  Future<bool> excluirTransacao(String id) async {
     isLoading.value = true;
     errorMessage.value = null;
 
@@ -116,11 +116,11 @@ class TransactionsController {
 
   // função de edição de transação
   Future<bool> editarTransacao({
-    required int id,
+    required String id,
     required String title,
     required double amount,
     required String type,
-    required int categoryId,
+    required String categoryId,
   }) async {
     isLoading.value = true;
     errorMessage.value = null;
@@ -128,7 +128,7 @@ class TransactionsController {
     try {
       if (title.isEmpty ||
           amount <= 0 ||
-          (type != 'entrada' && type != 'saida')) {
+          (type != 'income' && type != 'expense')) {
         errorMessage.value =
             "Dados inválidos. Verifique as informações e tente novamente.";
         throw Exception(

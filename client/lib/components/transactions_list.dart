@@ -7,14 +7,14 @@ class TransactionsList extends StatelessWidget {
   final List<TransactionModel> transactions;
   final bool isLoading;
   final Function({
-    int? idTransacao,
+    String? idTransacao,
     String? tittleInicial,
     double? precoInicial,
-    int? categoriaIdInicial,
+    String? categoriaIdInicial,
     String? tipoInicial,
   })?
   onEdit;
-  final Function(int)? onDelete;
+  final Function(String)? onDelete;
 
   const TransactionsList({
     super.key,
@@ -67,7 +67,7 @@ class TransactionsList extends StatelessWidget {
           amount: transaction.amount,
           category: transaction.category.name,
           date: transaction.createdAt,
-          isExpense: transaction.type == "saida",
+          isExpense: transaction.type == "expense",
           onDelete: () {
             // Lógica para deletar a transação
             if (onDelete != null) {

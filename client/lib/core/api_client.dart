@@ -6,7 +6,7 @@ class ApiClient {
 
   ApiClient() {
     BaseOptions options = BaseOptions(
-      baseUrl: "https://api-my-money-production.up.railway.app/",
+      baseUrl: "http://127.0.0.1:8000/",
       connectTimeout: const Duration(seconds: 60),
       receiveTimeout: const Duration(seconds: 60),
       headers: {"Content-Type": "application/json"},

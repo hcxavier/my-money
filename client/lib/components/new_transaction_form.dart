@@ -5,15 +5,15 @@ import 'package:my_money/components/build_category_dropdown.dart';
 
 class NewTransactionForm extends StatefulWidget {
   final VoidCallback onClosePressed;
-  final Future<void> Function(String, double, int, String) onRegisterPressed;
+  final Future<void> Function(String, double, String, String) onRegisterPressed;
   final List<CategoryModel> categorias;
   final Function(List<CategoryModel>)? onCategoriesLoaded;
 
   final bool isEditMode;
-  final int? transactionId;
+  final String? transactionId;
   final String? initialTitle;
   final double? initialPrice;
-  final int? initialCategoryId;
+  final String? initialCategoryId;
   final String? initialType;
 
   const NewTransactionForm({
@@ -35,7 +35,7 @@ class NewTransactionForm extends StatefulWidget {
 }
 
 class _NewTransactionFormState extends State<NewTransactionForm> {
-  String _selectedType = 'entrada';
+  String _selectedType = 'income';
   String? _selectedCategoryId;
 
   final TextEditingController _titleController = TextEditingController();
@@ -206,16 +206,16 @@ class _NewTransactionFormState extends State<NewTransactionForm> {
                 icon: Icons.arrow_circle_up_outlined,
                 text: 'Entrada',
                 color: CoresGlobal().incomeColor,
-                isSelected: _selectedType == 'entrada',
-                onPressed: () => setState(() => _selectedType = 'entrada'),
+                isSelected: _selectedType == 'income',
+                onPressed: () => setState(() => _selectedType = 'income'),
               ),
               const SizedBox(width: 16),
               _buildTypeButton(
                 icon: Icons.arrow_circle_down_outlined,
                 text: 'Saída',
                 color: CoresGlobal().outcomeColor,
-                isSelected: _selectedType == 'saida',
-                onPressed: () => setState(() => _selectedType = 'saida'),
+                isSelected: _selectedType == 'expense',
+                onPressed: () => setState(() => _selectedType = 'expense'),
               ),
             ],
           ),
@@ -237,7 +237,7 @@ class _NewTransactionFormState extends State<NewTransactionForm> {
                         await widget.onRegisterPressed(
                           _titleController.text.trim(),
                           double.parse(_priceController.text),
-                          int.parse(_selectedCategoryId!), // Conversão aqui!
+                          _selectedCategoryId!, // Conversão aqui!
                           _selectedType,
                         );
 
