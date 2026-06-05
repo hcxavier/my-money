@@ -141,6 +141,8 @@ OAUTH2_PROVIDER = {
     'OIDC_ENABLED': True,
     
     'OIDC_RSA_PRIVATE_KEY': OIDC_RSA_PRIVATE_KEY,
+
+    'OIDC_RP_INITIATED_LOGOUT_ENABLED': True,
     
     'SCOPES': {
         'read': 'Ler dados',

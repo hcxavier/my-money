@@ -5,12 +5,16 @@ class TokenService {
   
   final String _accessTokenKey = "access_token";
   final String _refreshTokenKey = "refresh_token";
+  final String _idTokenKey = "id_token";
 
   // Salvar tokens
-  Future<void> salvarTokens(String accessToken, String? refreshToken) async {
+  Future<void> salvarTokens(String accessToken, String? refreshToken, {String? idToken}) async {
     await _storage.write(key: _accessTokenKey, value: accessToken);
     if (refreshToken != null) {
       await _storage.write(key: _refreshTokenKey, value: refreshToken);
+    }
+    if (idToken != null) {
+      await _storage.write(key: _idTokenKey, value: idToken);
     }
   }
 
@@ -24,9 +28,15 @@ class TokenService {
     return await _storage.read(key: _refreshTokenKey);
   }
 
+  // Recuperar ID token
+  Future<String?> recuperarIdToken() async {
+    return await _storage.read(key: _idTokenKey);
+  }
+
   // Remover tokens
   Future<void> removerTokens() async {
     await _storage.delete(key: _accessTokenKey);
     await _storage.delete(key: _refreshTokenKey);
+    await _storage.delete(key: _idTokenKey);
   }
 }

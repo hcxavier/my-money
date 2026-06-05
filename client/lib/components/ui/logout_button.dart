@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:my_money/core/token_service.dart';
 import 'package:my_money/components/ui/custom_snackbar.dart';
+import 'package:my_money/features/auth/auth_controller.dart';
 
 class LogoutButton extends StatelessWidget {
   final Color borderColor;
@@ -8,9 +8,9 @@ class LogoutButton extends StatelessWidget {
   const LogoutButton({super.key, required this.borderColor});
 
   Future<void> fazerLogout(BuildContext context) async {
-    final tokenService = TokenService();
+    final authController = AuthController();
 
-    await tokenService.removerTokens();
+    await authController.logout();
 
     if (context.mounted) {
       CustomSnackBar.show(

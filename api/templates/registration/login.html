@@ -2,23 +2,223 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Login - Servidor de Autenticação</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - My Money</title>
     <style>
-        body { font-family: Arial, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #f4f4f9; }
-        .login-container { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); width: 300px; }
-        .form-group { margin-bottom: 15px; }
-        button { width: 100%; padding: 10px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        :root {
+            --bg-color: #050508;
+            --card-bg: #0d111b;
+            --text-primary: #ffffff;
+            --text-secondary: #8b949e;
+            --input-bg: #111827;
+            --input-border: #30363d;
+            --button-bg: #5c60f5;
+            --button-hover: #4a4edf;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: var(--text-primary);
+        }
+
+        .login-card {
+            background-color: var(--card-bg);
+            width: 100%;
+            max-width: 400px;
+            padding: 48px 32px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+            text-align: center;
+        }
+
+        .icon-container {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, #00B37E 0%, #00875F 100%);
+            margin: 0 auto 24px;
+            border-radius: 16px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 0 20px rgba(0, 179, 126, 0.3);
+        }
+
+        .icon-container svg {
+            width: 32px;
+            height: 32px;
+            color: white;
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-bottom: 40px;
+        }
+
+        .form-group {
+            text-align: left;
+            margin-bottom: 24px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 8px;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-wrapper svg {
+            position: absolute;
+            left: 16px;
+            width: 18px;
+            height: 18px;
+            color: var(--text-secondary);
+        }
+
+        .input-wrapper input {
+            width: 100%;
+            background-color: var(--input-bg);
+            border: 1px solid var(--input-border);
+            border-radius: 8px;
+            padding: 14px 16px 14px 48px;
+            color: white;
+            font-size: 14px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            outline: none;
+        }
+
+        .input-wrapper input:focus {
+            border-color: var(--button-bg);
+            box-shadow: 0 0 0 3px rgba(92, 96, 245, 0.2);
+        }
+
+        button {
+            width: 100%;
+            background-color: var(--button-bg);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            margin-top: 8px;
+        }
+
+        button:hover {
+            background-color: var(--button-hover);
+        }
+
+        .footer-text {
+            margin-top: 32px;
+            font-size: 14px;
+            color: var(--text-secondary);
+            border-top: 1px solid var(--input-border);
+            padding-top: 24px;
+        }
+
+        .footer-text a {
+            color: var(--button-bg);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .footer-text a:hover {
+            text-decoration: underline;
+        }
+
+        .errorlist {
+            list-style: none;
+            color: #f75a68;
+            font-size: 13px;
+            margin-bottom: 16px;
+            text-align: left;
+        }
     </style>
 </head>
 <body>
 
-<div class="login-container">
-    <h2>Entrar</h2>
+<div class="login-card">
+    <div class="icon-container">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+            <polyline points="17 6 23 6 23 12"></polyline>
+        </svg>
+    </div>
+
+    <h1>My Money</h1>
+    <p class="subtitle">Entre na sua conta para gerenciar suas finanças</p>
+
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
+        
+        {% if form.non_field_errors %}
+            <div class="errorlist">
+                {% for error in form.non_field_errors %}
+                    <p>{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <div class="form-group">
+            <label for="id_username">E-MAIL</label>
+            <div class="input-wrapper">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                    <polyline points="22,6 12,13 2,6"></polyline>
+                </svg>
+                <input type="email" name="username" id="id_username" placeholder="seu.email@exemplo.com" required>
+            </div>
+            {% if form.username.errors %}
+                <div class="errorlist">{{ form.username.errors }}</div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label for="id_password">SENHA</label>
+            <div class="input-wrapper">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                </svg>
+                <input type="password" name="password" id="id_password" placeholder="••••••••" required>
+            </div>
+            {% if form.password.errors %}
+                <div class="errorlist">{{ form.password.errors }}</div>
+            {% endif %}
+        </div>
+
         <button type="submit">Entrar</button>
     </form>
+
 </div>
 
 </body>

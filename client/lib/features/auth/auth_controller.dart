@@ -22,6 +22,7 @@ class AuthController {
         await _tokenService.salvarTokens(
           result.accessToken!,
           result.refreshToken,
+          idToken: result.idToken,
         );
         return true;
       }
@@ -106,6 +107,18 @@ class AuthController {
       return false;
     } finally {
       isLoading.value = false;
+    }
+  }
+
+  Future<bool> logout() async {
+    try {
+      final result = await _repository.logout();
+      await _tokenService.removerTokens();
+      
+      return result;
+    } catch (e) {
+      print('Erro ao realizar logout: $e');
+      return false;
     }
   }
 }

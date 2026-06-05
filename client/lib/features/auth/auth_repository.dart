@@ -1,7 +1,9 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_appauth/flutter_appauth.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:my_money/core/api_client.dart';
+import 'package:my_money/core/token_service.dart';
 import 'package:my_money/features/auth/auth_model.dart';
 
 class AuthRepository {
@@ -97,6 +99,64 @@ class AuthRepository {
           "Falha ao fazer login. Erro no servidor. Tente novamente mais tarde.",
         );
       }
+    }
+  }
+
+  Future<bool> logout() async {
+    try {
+      final tokenService = TokenService();
+      final accessToken = await tokenService.recuperarAccessToken();
+      final refreshToken = await tokenService.recuperarRefreshToken();
+
+      // 1. Revogar o Access Token no servidor
+      if (accessToken != null) {
+        await _dio.post(
+          "/o/revoke_token/",
+          data: {
+            "token": accessToken,
+            "client_id": dotenv.get("CLIENT_ID"),
+          },
+          options: Options(contentType: Headers.formUrlEncodedContentType),
+        );
+      }
+
+      // 2. Revogar o Refresh Token no servidor
+      if (refreshToken != null) {
+        await _dio.post(
+          "/o/revoke_token/",
+          data: {
+            "token": refreshToken,
+            "client_id": dotenv.get("CLIENT_ID"),
+          },
+          options: Options(contentType: Headers.formUrlEncodedContentType),
+        );
+      }
+
+      // 3. Limpar sessão no navegador (OIDC End Session)
+      try {
+        final idToken = await tokenService.recuperarIdToken();
+        await _appAuth.endSession(
+          EndSessionRequest(
+            idTokenHint: idToken,
+            postLogoutRedirectUrl: 'com.example.mymoney://callback',
+            serviceConfiguration: AuthorizationServiceConfiguration(
+              authorizationEndpoint: "${dotenv.get("API_URL")}/o/authorize/",
+              tokenEndpoint: "${dotenv.get("API_URL")}/o/token/",
+              endSessionEndpoint: "${dotenv.get("API_URL")}/o/logout/",
+            ),
+          ),
+        );
+      } catch (e) {
+        print('Navegador: Logout de sessão cancelado ou não suportado: $e');
+      }
+
+      return true;
+    } on DioException catch (e) {
+      print('Erro ao realizar logout no servidor: ${e.message}');
+      return false;
+    } catch (e) {
+      print('Erro inesperado no logout: $e');
+      return false;
     }
   }
 }

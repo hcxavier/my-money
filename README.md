@@ -84,9 +84,11 @@ cd api
 8. Abra a no navedador o admin do django `http://localhost:8000/admin/` e crie uma application com as seguintes configurações: 
     - Mantenha o Client id e copie-o para o `.env` do client.
     - No campo Redirect uris insira: `com.example.mymoney://callback`.
+    - No campo Post Logout Redirect uris insira: `com.example.mymoney://callback`.
     - No campo Client type marque: `public`.
     - No campo Authorization grant type marque: `Authorization code`.
     - No campo Name insira qualquer nome.
+    - No campo skip Authorization marque a caixinha.
     - No campo Algorithm marque: `RSA with SHA-2 256`. 
 ---
 

@@ -32,7 +32,7 @@ class RegisterPage extends StatelessWidget {
         context: context,
         message: "Registro realizado com sucesso!",
       );
-      Navigator.pushReplacementNamed(context, "/home");
+      Navigator.pushReplacementNamed(context, "/login");
     } else {
       CustomSnackBar.show(
         context: context,
