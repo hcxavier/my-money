@@ -3,8 +3,14 @@ import 'package:my_money/core/token_service.dart';
 import 'package:my_money/features/auth/auth_repository.dart';
 
 class AuthController {
-  final AuthRepository _repository = AuthRepository();
-  final TokenService _tokenService = TokenService();
+  final AuthRepository _repository;
+  final TokenService _tokenService;
+
+  AuthController({
+    AuthRepository? repository,
+    TokenService? tokenService,
+  })  : _repository = repository ?? AuthRepository(),
+        _tokenService = tokenService ?? TokenService();
 
   // estados:
   final isLoading = ValueNotifier<bool>(false);
