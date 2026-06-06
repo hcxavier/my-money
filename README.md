@@ -4,7 +4,7 @@ O **My Money** é uma solução completa para controle de finanças pessoais, co
 
 ## 🚀 Funcionalidades Principais
 
-- **Autenticação Segura:** Registro e login de usuários com suporte a OAuth2 e JWT.
+- **Autenticação Segura:** Registro e login de usuários com suporte a OAuth2.
 - **Gestão de Transações:** Cadastro, edição, exclusão e listagem de receitas (Entradas) e despesas (Saídas).
 - **Categorização:** Organização de movimentações por categorias (Alimentação, Transporte, Saúde, etc.).
 - **Dashboard Financeiro:** Visualização de saldo total, total de entradas e total de saídas com datas das últimas movimentações.
@@ -28,6 +28,11 @@ O **My Money** é uma solução completa para controle de finanças pessoais, co
 - **Cliente HTTP:** [Dio](https://pub.dev/packages/dio)
 - **Armazenamento Seguro:** [Flutter Secure Storage](https://pub.dev/packages/flutter_secure_storage)
 - **Autenticação:** [Flutter AppAuth](https://pub.dev/packages/flutter_appauth)
+
+### Frontend (Web)
+- **Framework:** [React](https://react.dev/)
+- **Build Tool:** [Vite](https://vitejs.dev/)
+- **Styling:** [Tailwind CSS](https://tailwindcss.com/)
 
 ---
 
@@ -75,21 +80,22 @@ cd api
     python manage.py migrate
     python manage.py runserver 0.0.0.0:8000
     ```
-7. Crie um super usuário (admin) e preencha os dados de acordo com sua preferência
-
-    ```
+7.  **Crie um superusuário (admin):**
+    Preencha os dados de acordo com sua preferência:
+    ```bash
     python manage.py createsuperuser
     ```
-    
-8. Abra a no navedador o admin do django `http://localhost:8000/admin/` e crie uma application com as seguintes configurações: 
-    - Mantenha o Client id e copie-o para o `.env` do client.
-    - No campo Redirect uris insira: `com.example.mymoney://callback`.
-    - No campo Post Logout Redirect uris insira: `com.example.mymoney://callback`.
-    - No campo Client type marque: `public`.
-    - No campo Authorization grant type marque: `Authorization code`.
-    - No campo Name insira qualquer nome.
-    - No campo skip Authorization marque a caixinha.
-    - No campo Algorithm marque: `RSA with SHA-2 256`. 
+8.  **Configure a aplicação OAuth2:**
+    Abra no navegador o admin do Django em `http://localhost:8000/admin/` e crie uma nova aplicação em "Django OAuth Toolkit" > "Applications" com as seguintes configurações:
+    - **Client ID:** Mantenha o gerado e copie-o para o `.env` dos clientes (Mobile e Web).
+    - **Redirect URIs:** Insira `com.example.mymoney://callback` (para Mobile).
+    - **Post Logout Redirect URIs:** Insira `com.example.mymoney://callback`.
+    - **Client Type:** Marque `Public`.
+    - **Authorization Grant Type:** Marque `Authorization code`.
+    - **Name:** Insira um nome de sua preferência (ex: My Money App).
+    - **Skip Authorization:** Marque esta opção.
+    - **Algorithm:** Marque `RSA with SHA-2 256`.
+
 ---
 
 ### 2. Configuração do Frontend (App Móvel)
@@ -110,13 +116,11 @@ cd client
     API_URL=http://seu_ip:8000
     CLIENT_ID=seu_client_id_do_oauth2
     ```
-
 3.  **Execute o aplicativo:**
     ```bash
     flutter run
     ```
-
----
+**Obs:** É necessário que o computador que esteja executando o servidor Django e o celular com o aplicativo Flutter estejam na mesma rede local.
 
 ## 🧪 Testes
 
@@ -132,4 +136,4 @@ cd api
 
 - `/api`: Código fonte do servidor Django (Backend).
 - `/client`: Código fonte do aplicativo Flutter (Frontend Mobile).
-- `/frontend`: Projeto Web alternativo em React/Vite (Opcional).
+- `/frontend`: Código fonte da aplicação React (Frontend Web).

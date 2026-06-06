@@ -153,136 +153,138 @@ class _NewTransactionFormState extends State<NewTransactionForm> {
         color: CoresGlobal().backgroundColor,
         borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Nova transação',
-                style: TextStyle(
-                  color: CoresGlobal().textColor,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Nova transação',
+                  style: TextStyle(
+                    color: CoresGlobal().textColor,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-              IconButton(
-                icon: Icon(Icons.close, color: CoresGlobal().hintColor),
-                onPressed: widget.onClosePressed,
-              ),
-            ],
-          ),
-
-          const SizedBox(height: 32),
-
-          _buildFilledInputField(
-            hint: 'Descrição',
-            controller: _titleController,
-          ),
-
-          _buildFilledInputField(
-            hint: 'Preço',
-            controller: _priceController,
-            keyboardType: const TextInputType.numberWithOptions(decimal: true),
-          ),
-
-          CategoryDropdown(
-            selectedCategoryId: _selectedCategoryId,
-            categorias: widget.categorias,
-            onChanged: (String? newValue) {
-              setState(() {
-                _selectedCategoryId = newValue;
-              });
-            },
-          ),
-
-          const SizedBox(height: 16),
-
-          Row(
-            children: [
-              _buildTypeButton(
-                icon: Icons.arrow_circle_up_outlined,
-                text: 'Entrada',
-                color: CoresGlobal().incomeColor,
-                isSelected: _selectedType == 'income',
-                onPressed: () => setState(() => _selectedType = 'income'),
-              ),
-              const SizedBox(width: 16),
-              _buildTypeButton(
-                icon: Icons.arrow_circle_down_outlined,
-                text: 'Saída',
-                color: CoresGlobal().outcomeColor,
-                isSelected: _selectedType == 'expense',
-                onPressed: () => setState(() => _selectedType = 'expense'),
-              ),
-            ],
-          ),
-
-          const SizedBox(height: 40),
-
-          // 4. ATUALIZADO: Botão Cadastrar com lógica assíncrona
-          SizedBox(
-            width: double.infinity,
-            height: 56,
-            child: ElevatedButton(
-              onPressed: isFormValid
-                  ? () async {
-                      // Trava o botão e mostra o loading
-                      setState(() => _isSubmitting = true);
-
-                      try {
-                        // Avisa a HomePage para salvar os dados (convertendo a string do ID para Int)
-                        await widget.onRegisterPressed(
-                          _titleController.text.trim(),
-                          double.parse(_priceController.text),
-                          _selectedCategoryId!, // Conversão aqui!
-                          _selectedType,
-                        );
-
-                        // NOTA: Não precisamos limpar os controllers aqui porque
-                        // a NavBarMain vai fechar o modal assim que o await terminar!
-                      } catch (e) {
-                        // Se deu erro na API, destrava o botão para o usuário tentar de novo
-                        if (mounted) {
-                          setState(() => _isSubmitting = false);
+                IconButton(
+                  icon: Icon(Icons.close, color: CoresGlobal().hintColor),
+                  onPressed: widget.onClosePressed,
+                ),
+              ],
+            ),
+        
+            const SizedBox(height: 32),
+        
+            _buildFilledInputField(
+              hint: 'Descrição',
+              controller: _titleController,
+            ),
+        
+            _buildFilledInputField(
+              hint: 'Preço',
+              controller: _priceController,
+              keyboardType: const TextInputType.numberWithOptions(decimal: true),
+            ),
+        
+            CategoryDropdown(
+              selectedCategoryId: _selectedCategoryId,
+              categorias: widget.categorias,
+              onChanged: (String? newValue) {
+                setState(() {
+                  _selectedCategoryId = newValue;
+                });
+              },
+            ),
+        
+            const SizedBox(height: 16),
+        
+            Row(
+              children: [
+                _buildTypeButton(
+                  icon: Icons.arrow_circle_up_outlined,
+                  text: 'Entrada',
+                  color: CoresGlobal().incomeColor,
+                  isSelected: _selectedType == 'income',
+                  onPressed: () => setState(() => _selectedType = 'income'),
+                ),
+                const SizedBox(width: 16),
+                _buildTypeButton(
+                  icon: Icons.arrow_circle_down_outlined,
+                  text: 'Saída',
+                  color: CoresGlobal().outcomeColor,
+                  isSelected: _selectedType == 'expense',
+                  onPressed: () => setState(() => _selectedType = 'expense'),
+                ),
+              ],
+            ),
+        
+            const SizedBox(height: 40),
+        
+            // 4. ATUALIZADO: Botão Cadastrar com lógica assíncrona
+            SizedBox(
+              width: double.infinity,
+              height: 56,
+              child: ElevatedButton(
+                onPressed: isFormValid
+                    ? () async {
+                        // Trava o botão e mostra o loading
+                        setState(() => _isSubmitting = true);
+        
+                        try {
+                          // Avisa a HomePage para salvar os dados (convertendo a string do ID para Int)
+                          await widget.onRegisterPressed(
+                            _titleController.text.trim(),
+                            double.parse(_priceController.text),
+                            _selectedCategoryId!, // Conversão aqui!
+                            _selectedType,
+                          );
+        
+                          // NOTA: Não precisamos limpar os controllers aqui porque
+                          // a NavBarMain vai fechar o modal assim que o await terminar!
+                        } catch (e) {
+                          // Se deu erro na API, destrava o botão para o usuário tentar de novo
+                          if (mounted) {
+                            setState(() => _isSubmitting = false);
+                          }
                         }
                       }
-                    }
-                  : null,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: CoresGlobal().primaryColor,
-                disabledBackgroundColor: CoresGlobal().primaryColor.withValues(
-                  alpha: 0.5,
+                    : null,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: CoresGlobal().primaryColor,
+                  disabledBackgroundColor: CoresGlobal().primaryColor.withValues(
+                    alpha: 0.5,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(6),
+                  ),
                 ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(6),
-                ),
+                // 5. ATUALIZADO: Mostra o CircularProgressIndicator se estiver submetendo
+                child: _isSubmitting
+                    ? const SizedBox(
+                        height: 24,
+                        width: 24,
+                        child: CircularProgressIndicator(
+                          color: Colors.white,
+                          strokeWidth: 2,
+                        ),
+                      )
+                    : Text(
+                        widget.isEditMode ? 'Atualizar' : 'Cadastrar',
+                        style: TextStyle(
+                          color: isFormValid
+                              ? CoresGlobal().textColor
+                              : CoresGlobal().textColor.withValues(alpha: 0.5),
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
               ),
-              // 5. ATUALIZADO: Mostra o CircularProgressIndicator se estiver submetendo
-              child: _isSubmitting
-                  ? const SizedBox(
-                      height: 24,
-                      width: 24,
-                      child: CircularProgressIndicator(
-                        color: Colors.white,
-                        strokeWidth: 2,
-                      ),
-                    )
-                  : Text(
-                      widget.isEditMode ? 'Atualizar' : 'Cadastrar',
-                      style: TextStyle(
-                        color: isFormValid
-                            ? CoresGlobal().textColor
-                            : CoresGlobal().textColor.withValues(alpha: 0.5),
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

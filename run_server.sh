@@ -8,7 +8,7 @@ cleanup() {
 
 trap cleanup SIGINT SIGTERM EXIT
 
-echo "1. Starting Django backend server on http://localhost:3000..."
+echo "1. Starting Django backend server on http://localhost:8000..."
 cd api
 
 bash run_server.sh &
