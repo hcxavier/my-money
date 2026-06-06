@@ -2,6 +2,8 @@
 
 O **My Money** é uma solução completa para controle de finanças pessoais, composta por uma API robusta desenvolvida em Django e um aplicativo móvel intuitivo desenvolvido em Flutter. O projeto permite que usuários registrem suas receitas e despesas, visualizem métricas de saldo e gerenciem seu perfil de forma segura.
 
+Video Apresentando o Projeto: https://youtu.be/BOz_ZEra7Is
+
 ## 🚀 Funcionalidades Principais
 
 - **Autenticação Segura:** Registro e login de usuários com suporte a OAuth2.
